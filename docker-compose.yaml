@@ -1,0 +1,24 @@
+
+services:
+   db_tomcat:
+     image: mariadb
+     volumes:
+       - /data:/var/lib/mysql
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: testdb1
+       MYSQL_USER: testuser
+       MYSQL_PASSWORD: root
+     ports:
+       - 3306:3306
+   web:
+     depends_on:
+      - db_tomcat
+     image: tomcat_bcl
+     ports: 
+      - '8083:8080'
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: testdb1
+       MYSQL_USER: testuser
+       MYSQL_PASSWORD: root

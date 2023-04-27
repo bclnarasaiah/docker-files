@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  tomcat:
+    image: tomcat:9.0.54-jdk11-openjdk
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./webapps:/usr/local/tomcat/webapps
+    depends_on:
+      - mongodb
+      - mariadb
+  mongodb:
+    image: mongo:4.4.6
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb-data:/data/db
+  mariadb:
+    image: mariadb:10.6.5
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: sample
+    volumes:
+      - ./mariadb-data:/var/lib/mysql
+mongodb://mongodb:27017/mydatabase
+jdbc:mariadb://mariadb:3306/sample
+

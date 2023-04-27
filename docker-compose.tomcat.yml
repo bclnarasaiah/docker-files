@@ -1,0 +1,34 @@
+
+version: '2.17'    
+services:
+  tomcat_db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: tomcat
+      MYSQL_DATABASE: tomcat
+      MYSQL_USER: tomcat
+      MYSQL_PASSWORD: tomcat
+    networks:
+      - tomcat_net
+    volumes:
+      - tomcat_data:/var/lib/mysql
+
+  wordpress:
+    depends_on:
+      - tomcat_db
+    image: tomcat_bcl
+    restart: always
+    ports:
+      - "8081:8080"
+    environment:
+      TOMCAT_DB_HOST: tomcat_db:3306
+      TOMCAT_DB_USER: tomcat_bcl
+      TOMCAT_DB_PASSWORD: tomcat
+      TOMCAT_DB_NAME: tomcat
+    networks:
+      - tomcat_net
+volumes:
+  tomcat_data: {}
+networks:
+  tomcat_net: {}
